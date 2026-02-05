@@ -32,7 +32,7 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
     // February 2025
     for (let day = 1; day <= 28; day++) {
       const date = new Date(2025, 1, day);
-      const dayOfWeek = date.getDay(); // 0 Sun, 3 Wed, 5 Fri, 6 Sat
+      const dayOfWeek = date.getDay(); // 3 Wed, 5 Fri, 6 Sat
       if ([3, 5, 6].includes(dayOfWeek)) {
         dates.push(date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
       }
@@ -51,7 +51,7 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
 
   const handleSubmit = () => {
     setIsSubmitting(true);
-    // Secure background submission
+    // Background submission (Gmail is hidden from UI as requested)
     setTimeout(() => {
       setIsSubmitting(false);
       onFinish();
@@ -160,14 +160,14 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
             <div className="space-y-4 mt-8">
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Alias</label>
-                <input type="text" value={formData.name} onChange={(e) => updateForm({ name: e.target.value })} placeholder="How should the host address you?" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
+                <input type="text" value={formData.name} onChange={(e) => updateForm({ name: e.target.value })} placeholder="Your handle/alias" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Email</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Secure Email</label>
                 <input type="email" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} placeholder="contact@example.com" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Secure Phone</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Contact Number</label>
                 <input type="tel" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} placeholder="+1 (555) 000-0000" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
             </div>
@@ -212,14 +212,14 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
                 <Calendar className="text-purple-500" size={24} />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-white">Event Preferences</h3>
-                <p className="text-slate-400 text-sm">Select your February night & dynamic.</p>
+                <h3 className="text-2xl font-bold text-white">Preferences & Date</h3>
+                <p className="text-slate-400 text-sm">Available dates for February sessions.</p>
               </div>
             </div>
 
             <div className="space-y-6 mt-6">
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 ml-1">February Sessions (Wed, Fri, Sat)</label>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 ml-1">February 2025 Sessions (Wed, Fri, Sat)</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {availableDates.map(date => (
                     <button key={date} onClick={() => updateForm({ selectedDate: date })} className={`px-2 py-3 rounded-lg border text-[10px] font-bold transition-all ${formData.selectedDate === date ? 'bg-purple-600 border-purple-600 text-white' : 'bg-slate-950/50 border-slate-800 text-slate-500 hover:border-slate-700'}`}>
@@ -232,12 +232,13 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
               <div className="p-4 rounded-xl bg-pink-500/5 border border-pink-500/10 space-y-3">
                 <div className="flex items-center gap-3">
                   <Coffee className="text-pink-400" size={18} />
-                  <span className="text-white font-bold text-xs uppercase tracking-wider">Premium Refreshments</span>
+                  <span className="text-white font-bold text-xs uppercase tracking-wider">Amenities Included</span>
                 </div>
-                <p className="text-slate-400 text-[10px] leading-relaxed">
-                  Hot towels, gourmet snacks, and chilled soda are provided. Complimentary condoms are available at all stations. 
-                  <span className="text-pink-400 block mt-1 font-bold italic">BYOT: Personal toys are permitted and encouraged.</span>
-                </p>
+                <div className="text-slate-400 text-[10px] leading-relaxed space-y-1">
+                  <p>• Hot towels, premium snacks, and chilled soda provided.</p>
+                  <p>• Complimentary condoms available at all stations.</p>
+                  <p className="text-pink-400 font-bold italic">BYOT: Personal toys are permitted and encouraged.</p>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -267,15 +268,15 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
             <div className="w-16 h-16 bg-pink-600/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <Shield className="text-pink-400" size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Secure Review</h3>
-            <p className="text-slate-400 text-sm mb-8">Review your Alias and preferences before secure transmission.</p>
+            <h3 className="text-2xl font-bold text-white mb-2">Final Confirmation</h3>
+            <p className="text-slate-400 text-sm mb-8">Securely transmit your application for host manual approval.</p>
             <div className="p-6 rounded-2xl bg-slate-950/50 border border-slate-800 text-left space-y-3">
               <div className="flex justify-between border-b border-slate-800 pb-2">
                 <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Alias</span>
                 <span className="text-slate-200 text-sm font-bold">{formData.name}</span>
               </div>
               <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Selected Date</span>
+                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Selected Night</span>
                 <span className="text-purple-400 text-sm font-bold">{formData.selectedDate || 'Not Selected'}</span>
               </div>
               <div className="flex justify-between border-b border-slate-800 pb-2">
@@ -294,10 +295,10 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
 
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 mt-12 pt-6 border-t border-slate-800">
         <button onClick={step === 1 ? onCancel : () => setStep(step - 1)} disabled={isSubmitting} className="w-full sm:w-auto px-6 py-3 text-slate-500 hover:text-white transition-colors flex items-center justify-center gap-2 font-bold text-sm">
-          {step === 1 ? 'Discard' : <><ArrowLeft size={16} /> Back</>}
+          {step === 1 ? 'Cancel' : <><ArrowLeft size={16} /> Back</>}
         </button>
         <button onClick={handleNext} disabled={isSubmitting || (step === 1 && (!formData.ageVerified || !formData.agreedToConduct)) || (step === 2 && (!formData.name || !formData.email)) || (step === 3 && !isImagesStepComplete) || (step === 4 && (!formData.role || !formData.interestType || !formData.selectedDate))} className={`w-full sm:w-auto px-12 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all ${step === 5 ? 'bg-pink-600 hover:bg-pink-700 text-white shadow-xl shadow-pink-600/30' : 'bg-white text-slate-950 hover:bg-slate-200'}`}>
-          {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Transmitting to Secure Host...</> : (step === 5 ? 'Send for Approval' : <>Continue <ArrowRight size={18} /></>)}
+          {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Transmitting to Host...</> : (step === 5 ? 'Send for Approval' : <>Next Step <ArrowRight size={18} /></>)}
         </button>
       </div>
     </div>

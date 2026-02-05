@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { UserCheck, ClipboardList, KeyRound, CreditCard } from 'lucide-react';
+import { UserCheck, ClipboardList, KeyRound, MessageSquare } from 'lucide-react';
 
 const steps = [
   {
@@ -25,9 +25,9 @@ const steps = [
     bg: 'bg-purple-400/10'
   },
   {
-    title: 'Confirm with Deposit',
-    desc: 'Secure your spot with a refundable deposit that covers damages, refreshments and venue security.',
-    icon: CreditCard,
+    title: 'Final Confirmation',
+    desc: 'Contact manager "sugarwhips" with your code to arrange manual deposit and receive address.',
+    icon: MessageSquare,
     color: 'text-pink-400',
     bg: 'bg-pink-400/10'
   }

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Lock, UserCheck, ChevronRight, Coffee } from 'lucide-react';
+import { Shield, Lock, UserCheck, ChevronRight, Coffee, Heart } from 'lucide-react';
 
 interface HeroProps {
   onStart: () => void;
@@ -21,13 +21,13 @@ const Hero: React.FC<HeroProps> = ({ onStart, onViewRules }) => {
       
       {/* Background Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full -z-10 opacity-40">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600 blur-[120px] rounded-full"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-pink-600 blur-[120px] rounded-full"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-800 blur-[120px] rounded-full"></div>
       </div>
 
       <div className="container mx-auto px-4 text-center">
         <div className="inline-flex items-center space-x-2 bg-slate-900/80 border border-slate-700 rounded-full px-4 py-1.5 mb-8 animate-in fade-in slide-in-from-top-4 duration-1000 backdrop-blur-md">
-          <Shield size={16} className="text-indigo-400" />
+          <Shield size={16} className="text-pink-400" />
           <span className="text-sm font-medium text-slate-300 tracking-wide uppercase">Safe • Private • Secure</span>
         </div>
 
@@ -41,17 +41,21 @@ const Hero: React.FC<HeroProps> = ({ onStart, onViewRules }) => {
           A premium 25+ environment for discerning adults.
         </p>
         
-        <div className="mb-10 flex items-center justify-center gap-6 animate-in fade-in delay-300">
-           <div className="flex items-center gap-2 text-indigo-300 bg-indigo-500/10 px-4 py-2 rounded-lg border border-indigo-500/20">
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-4 animate-in fade-in delay-300">
+           <div className="flex items-center gap-2 text-pink-300 bg-pink-500/10 px-4 py-2 rounded-lg border border-pink-500/20">
              <Coffee size={18} />
-             <span className="text-sm font-medium">Refreshments & Hot Soda Included</span>
+             <span className="text-sm font-medium">Hot Towels & Chilled Soda</span>
+           </div>
+           <div className="flex items-center gap-2 text-purple-300 bg-purple-500/10 px-4 py-2 rounded-lg border border-purple-500/20">
+             <Heart size={18} />
+             <span className="text-sm font-medium">Condoms & BYOT Policy</span>
            </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
           <button
             onClick={onStart}
-            className="w-full sm:w-auto px-10 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] flex items-center justify-center gap-2 group"
+            className="w-full sm:w-auto px-10 py-5 bg-pink-600 hover:bg-pink-700 text-white rounded-2xl font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] flex items-center justify-center gap-2 group"
           >
             Start Application
             <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -68,15 +72,15 @@ const Hero: React.FC<HeroProps> = ({ onStart, onViewRules }) => {
 
         <div className="mt-20 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-slate-500 animate-in fade-in duration-1000 delay-500">
           <div className="flex flex-col items-center gap-2">
-            <UserCheck size={28} className="text-indigo-400/60" />
+            <UserCheck size={28} className="text-pink-400/60" />
             <span className="text-[10px] uppercase tracking-[0.2em] font-bold">25+ Verified Only</span>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <Shield size={28} className="text-indigo-400/60" />
+            <Shield size={28} className="text-pink-400/60" />
             <span className="text-[10px] uppercase tracking-[0.2em] font-bold">Encrypted Data</span>
           </div>
           <div className="hidden md:flex flex-col items-center gap-2">
-            <Lock size={28} className="text-indigo-400/60" />
+            <Lock size={28} className="text-pink-400/60" />
             <span className="text-[10px] uppercase tracking-[0.2em] font-bold">Full Privacy</span>
           </div>
         </div>
