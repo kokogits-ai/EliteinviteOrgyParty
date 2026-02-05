@@ -28,7 +28,7 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ onPaid }) => {
             <h2 className="text-2xl font-bold text-white">Security Deposit</h2>
           </div>
           <p className="text-slate-400 leading-relaxed">
-            A refundable <span className="text-white font-bold">$100.00</span> security deposit is required to confirm your attendance. This covers incidental damages, refreshments, and ensures guest commitment.
+            A refundable <span className="text-white font-bold">$100.00</span> security deposit is required to confirm your attendance. This covers incidental damages, refreshments, and venue security.
           </p>
         </div>
 

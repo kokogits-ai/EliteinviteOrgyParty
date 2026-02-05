@@ -52,7 +52,7 @@ const InviteCodeCard: React.FC<InviteCodeCardProps> = ({ code, onNext }) => {
             Final Step Required
           </div>
           <p className="text-slate-400 text-sm leading-relaxed italic">
-            Send this code to the event manager <span className="text-white font-bold not-italic">sugarwhips</span> to arrange payment and receive venue directions.
+            Secure your spot with a refundable deposit (covering damages, refreshments, and venue security). Send this code to <span className="text-white font-bold not-italic">sugarwhips</span> to finalize.
           </p>
         </div>
 

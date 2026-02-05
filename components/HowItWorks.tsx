@@ -26,7 +26,7 @@ const steps = [
   },
   {
     title: 'Final Confirmation',
-    desc: 'Contact manager "sugarwhips" with your code to arrange manual deposit and receive address.',
+    desc: 'Contact manager "sugarwhips" with your code to arrange your refundable deposit (covering damages, refreshments, and venue security).',
     icon: MessageSquare,
     color: 'text-pink-400',
     bg: 'bg-pink-400/10'

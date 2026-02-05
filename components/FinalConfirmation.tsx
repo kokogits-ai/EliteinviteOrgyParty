@@ -31,7 +31,7 @@ const FinalConfirmation: React.FC<FinalConfirmationProps> = ({ inviteCode }) => 
             <h3 className="font-bold text-white">Manual Verification</h3>
           </div>
           <p className="text-slate-400 text-sm leading-relaxed mb-6">
-            To finalize payment and receive the secret venue location, send your code <span className="text-white font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800">{inviteCode}</span> to our manager:
+            Secure your spot with a refundable security deposit. This covers incidental damages, refreshments, and venue security. Send your code <span className="text-white font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800">{inviteCode}</span> to our manager:
           </p>
           <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-700 flex flex-col items-center gap-1 text-center group-hover:border-pink-500/50 transition-colors">
             <span className="text-[10px] uppercase tracking-widest font-bold text-slate-500">Event Manager</span>
