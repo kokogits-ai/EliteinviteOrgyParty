@@ -10,13 +10,12 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["node"]
   },
-  "include": ["index.tsx", "App.tsx", "types.ts", "components/**/*", "api/**/*"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["index.tsx", "App.tsx", "types.ts", "components/**/*", "api/**/*"]
 }
