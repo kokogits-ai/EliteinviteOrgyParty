@@ -14,8 +14,8 @@ export interface FormData {
   phone: string;
   role: 'Top' | 'Bottom' | 'Switch/Vers' | '';
   interestType: string;
-  profilePictures: string[];
   selectedDate: string;
+  aboutMe: string;
 }
 
 export interface StepProps {

@@ -1,6 +1,6 @@
 
-import React, { useState, useRef, useMemo } from 'react';
-import { CheckCircle, User, SlidersHorizontal, ArrowRight, ArrowLeft, Loader2, Camera, X, Image as ImageIcon, Shield, Coffee, Calendar, Heart } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle, User, ArrowRight, ArrowLeft, Loader2, Calendar, Shield, Coffee, Heart, PencilLine } from 'lucide-react';
 import { FormData } from '../types';
 
 interface ScreeningFormProps {
@@ -11,8 +11,6 @@ interface ScreeningFormProps {
 const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeUploadIndex, setActiveUploadIndex] = useState<number | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     ageVerified: false,
@@ -22,87 +20,36 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
     phone: '',
     role: '',
     interestType: '',
-    profilePictures: ['', '', '', ''],
     selectedDate: '',
+    aboutMe: '',
   });
 
-  const availableDates = useMemo(() => {
-    const dates = [];
-    // February 2025
-    for (let day = 1; day <= 28; day++) {
-      const date = new Date(2025, 1, day);
-      const dayOfWeek = date.getDay(); // 3 Wed, 5 Fri, 6 Sat
-      if ([3, 5, 6].includes(dayOfWeek)) {
-        dates.push(date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
-      }
-    }
-    return dates;
-  }, []);
+  const availableDates = ['Saturday Feb 7th', 'Sunday Feb 8th'];
 
   const updateForm = (data: Partial<FormData>) => {
     setFormData(prev => ({ ...prev, ...data }));
   };
 
   const handleNext = () => {
-    if (step < 5) setStep(step + 1);
-    else handleSubmit();
+    if (step < 4) {
+      setStep(step + 1);
+    } else {
+      handleSubmit();
+    }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setIsSubmitting(true);
-    try {
-      const response = await fetch('/api/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        onFinish();
-      } else {
-        console.error('Submission failed');
-        // Fallback to finishing even if API fails for demo purposes
-        onFinish();
-      }
-    } catch (error) {
-      console.error('Network error during submission:', error);
-      onFinish();
-    } finally {
+    // Simulating a brief "processing" animation for effect
+    setTimeout(() => {
       setIsSubmitting(false);
-    }
+      onFinish(); // This triggers code generation in App.tsx
+    }, 800);
   };
-
-  const handleImageClick = (index: number) => {
-    setActiveUploadIndex(index);
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && activeUploadIndex !== null) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newPictures = [...formData.profilePictures];
-        newPictures[activeUploadIndex] = reader.result as string;
-        updateForm({ profilePictures: newPictures });
-        setActiveUploadIndex(null);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = (index: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newPictures = [...formData.profilePictures];
-    newPictures[index] = '';
-    updateForm({ profilePictures: newPictures });
-  };
-
-  const isImagesStepComplete = formData.profilePictures.every(pic => pic !== '');
 
   const renderProgress = () => (
     <div className="flex items-center justify-between mb-10 px-4">
-      {[1, 2, 3, 4, 5].map(i => (
+      {[1, 2, 3, 4].map(i => (
         <React.Fragment key={i}>
           <div className={`flex flex-col items-center gap-2 relative z-10`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
@@ -111,7 +58,7 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
               {step > i ? <CheckCircle size={18} /> : i}
             </div>
           </div>
-          {i < 5 && (
+          {i < 4 && (
             <div className={`flex-grow h-0.5 mx-1 md:mx-2 rounded-full transition-all duration-300 ${
               step > i ? 'bg-pink-600' : 'bg-slate-800'
             }`} />
@@ -126,8 +73,6 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
       {renderProgress()}
 
       <div className="min-h-[420px]">
-        <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
-
         {step === 1 && (
           <div className="animate-in slide-in-from-right-4 duration-300">
             <div className="flex items-center gap-4 mb-6">
@@ -173,15 +118,15 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
 
             <div className="space-y-4 mt-8">
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Alias</label>
-                <input type="text" value={formData.name} onChange={(e) => updateForm({ name: e.target.value })} placeholder="Your handle/alias" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
+                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Alias / Handle</label>
+                <input type="text" value={formData.name} onChange={(e) => updateForm({ name: e.target.value })} placeholder="How should we call you?" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Secure Email</label>
                 <input type="email" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} placeholder="contact@example.com" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Contact Number</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Phone Number (Optional)</label>
                 <input type="tel" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} placeholder="+1 (555) 000-0000" className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all" />
               </div>
             </div>
@@ -191,67 +136,38 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
         {step === 3 && (
           <div className="animate-in slide-in-from-right-4 duration-300">
             <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-pink-500/10 rounded-xl">
-                <Camera className="text-pink-500" size={24} />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-white">Visual Verification</h3>
-                <p className="text-slate-400 text-sm">Upload 4 recent photos for host review.</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              {formData.profilePictures.map((pic, index) => (
-                <div key={index} onClick={() => handleImageClick(index)} className={`aspect-square rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all overflow-hidden relative group ${pic ? 'border-pink-500/50 bg-slate-900' : 'border-slate-800 bg-slate-950/50 hover:border-slate-700 hover:bg-slate-900'}`}>
-                  {pic ? (
-                    <>
-                      <img src={pic} className="w-full h-full object-cover" />
-                      <button onClick={(e) => removeImage(index, e)} className="absolute top-2 right-2 p-1.5 bg-red-500/80 hover:bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"><X size={14} /></button>
-                    </>
-                  ) : (
-                    <>
-                      <ImageIcon className="text-slate-700 mb-2" size={28} />
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Photo {index + 1}</span>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="animate-in slide-in-from-right-4 duration-300">
-            <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-purple-500/10 rounded-xl">
-                <Calendar className="text-purple-500" size={24} />
+                <PencilLine className="text-purple-500" size={24} />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-white">Preferences & Date</h3>
-                <p className="text-slate-400 text-sm">Available dates for February sessions.</p>
+                <h3 className="text-2xl font-bold text-white">Describe Your Fun</h3>
+                <p className="text-slate-400 text-sm">What are you looking for? (e.g. Pegging, etc.)</p>
               </div>
             </div>
 
             <div className="space-y-6 mt-6">
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 ml-1">February 2025 (Wed, Fri, Sat)</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 ml-1">About Me / Interests</label>
+                <textarea 
+                  value={formData.aboutMe} 
+                  onChange={(e) => updateForm({ aboutMe: e.target.value })} 
+                  placeholder="Describe your interests, kinks, or what makes you a great guest. Be as specific as you like (e.g. 'I love pegging', 'Strictly social', etc.)"
+                  className="w-full h-24 bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all resize-none text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 ml-1">Arrival Options (Strict)</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {availableDates.map(date => (
-                    <button key={date} onClick={() => updateForm({ selectedDate: date })} className={`px-2 py-3 rounded-lg border text-[10px] font-bold transition-all ${formData.selectedDate === date ? 'bg-purple-600 border-purple-600 text-white' : 'bg-slate-950/50 border-slate-800 text-slate-500 hover:border-slate-700'}`}>
+                    <button 
+                      key={date} 
+                      onClick={() => updateForm({ selectedDate: date })} 
+                      className={`px-4 py-3 rounded-xl border text-sm font-bold transition-all ${formData.selectedDate === date ? 'bg-purple-600 border-purple-600 text-white' : 'bg-slate-950/50 border-slate-800 text-slate-500 hover:border-slate-700'}`}
+                    >
                       {date}
                     </button>
                   ))}
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-pink-500/5 border border-pink-500/10 space-y-3">
-                <div className="flex items-center gap-3">
-                  <Coffee className="text-pink-400" size={18} />
-                  <span className="text-white font-bold text-xs uppercase tracking-wider">Amenities Included</span>
-                </div>
-                <div className="text-slate-400 text-[10px] leading-relaxed space-y-1">
-                  <p>• Hot towels, premium snacks, and chilled soda provided.</p>
-                  <p>• Complimentary condoms available at all stations.</p>
-                  <p className="text-pink-400 font-bold italic">BYOT: Personal toys are permitted and encouraged.</p>
                 </div>
               </div>
 
@@ -277,30 +193,25 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
           </div>
         )}
 
-        {step === 5 && (
+        {step === 4 && (
           <div className="animate-in slide-in-from-right-4 duration-300 py-4 text-center">
             <div className="w-16 h-16 bg-pink-600/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <Shield className="text-pink-400" size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Final Confirmation</h3>
-            <p className="text-slate-400 text-sm mb-8">Securely transmit your application for host manual approval.</p>
+            <h3 className="text-2xl font-bold text-white mb-2">Complete Screening</h3>
+            <p className="text-slate-400 text-sm mb-8">Generate your unique invitation code locally.</p>
             <div className="p-6 rounded-2xl bg-slate-950/50 border border-slate-800 text-left space-y-3">
               <div className="flex justify-between border-b border-slate-800 pb-2">
                 <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Alias</span>
                 <span className="text-slate-200 text-sm font-bold">{formData.name}</span>
               </div>
               <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Selected Night</span>
+                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Night</span>
                 <span className="text-purple-400 text-sm font-bold">{formData.selectedDate || 'Not Selected'}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Dynamics</span>
-                <span className="text-pink-400 text-sm font-bold">{formData.role} / {formData.interestType}</span>
-              </div>
-              <div className="grid grid-cols-4 gap-2 pt-2">
-                {formData.profilePictures.map((pic, i) => (
-                   pic ? <img key={i} src={pic} className="w-full aspect-square object-cover rounded-lg border border-slate-800 grayscale" alt="Verification" /> : <div key={i} className="w-full aspect-square bg-slate-900 rounded-lg border border-slate-800"></div>
-                ))}
+              <div className="flex flex-col gap-1">
+                <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Fun / Interests</span>
+                <span className="text-slate-300 text-xs italic line-clamp-2">{formData.aboutMe || 'No details provided'}</span>
               </div>
             </div>
           </div>
@@ -311,8 +222,12 @@ const ScreeningForm: React.FC<ScreeningFormProps> = ({ onFinish, onCancel }) => 
         <button onClick={step === 1 ? onCancel : () => setStep(step - 1)} disabled={isSubmitting} className="w-full sm:w-auto px-6 py-3 text-slate-500 hover:text-white transition-colors flex items-center justify-center gap-2 font-bold text-sm">
           {step === 1 ? 'Cancel' : <><ArrowLeft size={16} /> Back</>}
         </button>
-        <button onClick={handleNext} disabled={isSubmitting || (step === 1 && (!formData.ageVerified || !formData.agreedToConduct)) || (step === 2 && (!formData.name || !formData.email)) || (step === 3 && !isImagesStepComplete) || (step === 4 && (!formData.role || !formData.interestType || !formData.selectedDate))} className={`w-full sm:w-auto px-12 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all ${step === 5 ? 'bg-pink-600 hover:bg-pink-700 text-white shadow-xl shadow-pink-600/30' : 'bg-white text-slate-950 hover:bg-slate-200'}`}>
-          {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Transmitting to Secure Host...</> : (step === 5 ? 'Send for Approval' : <>Next Step <ArrowRight size={18} /></>)}
+        <button 
+          onClick={handleNext} 
+          disabled={isSubmitting || (step === 1 && (!formData.ageVerified || !formData.agreedToConduct)) || (step === 2 && (!formData.name || !formData.email)) || (step === 3 && (!formData.role || !formData.interestType || !formData.selectedDate))} 
+          className={`w-full sm:w-auto px-12 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all ${step === 4 ? 'bg-pink-600 hover:bg-pink-700 text-white shadow-xl shadow-pink-600/30' : 'bg-white text-slate-950 hover:bg-slate-200'}`}
+        >
+          {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Generating...</> : (step === 4 ? 'Generate My Code' : <>Next Step <ArrowRight size={18} /></>)}
         </button>
       </div>
     </div>

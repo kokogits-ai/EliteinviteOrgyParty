@@ -23,8 +23,8 @@ const App: React.FC = () => {
     phone: '',
     role: '',
     interestType: '',
-    profilePictures: ['', '', '', ''],
     selectedDate: '',
+    aboutMe: '',
   });
 
   const generateCode = () => {
